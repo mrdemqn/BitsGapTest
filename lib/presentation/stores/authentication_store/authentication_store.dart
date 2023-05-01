@@ -41,9 +41,15 @@ abstract class _AuthenticationStore with Store {
 
   int _currentPageIndex = 0;
 
+  // Controller for showing loader when we have delay
   final _loadingController = StreamController<bool>();
 
+  // Controller for showing success notification
+  final _successNotifyController = StreamController<bool>();
+
   Stream<bool> get loadingStream => _loadingController.stream;
+
+  Stream<bool> get successNotifyStream => _successNotifyController.stream;
 
   @observable
   TextEditingController userNameLoginController = TextEditingController();
@@ -60,6 +66,7 @@ abstract class _AuthenticationStore with Store {
   @observable
   TextEditingController passwordRegisterController = TextEditingController();
 
+  // function to log user into his account
   @action
   Future<void> login(BuildContext context) async {
     if (!_isBackgroundButtonLeft) {
@@ -103,6 +110,7 @@ abstract class _AuthenticationStore with Store {
     }
   }
 
+  // function for user registration
   @action
   Future<void> register() async {
     if (_isBackgroundButtonLeft) {
@@ -192,6 +200,7 @@ abstract class _AuthenticationStore with Store {
     _currentPageIndex = index;
   }
 
+  // Clears register field errors when the user types characters
   void _clearLoginFieldsError() {
     errorLoginMessage = null;
     emptyErrorMessages.removeWhere(
@@ -199,6 +208,7 @@ abstract class _AuthenticationStore with Store {
     );
   }
 
+  // Clears login field errors when the user types characters
   void _clearRegisterFieldsError() {
     errorRegisterMessage = null;
     emptyErrorMessages.removeWhere(
@@ -206,6 +216,7 @@ abstract class _AuthenticationStore with Store {
     );
   }
 
+  // Field validation function on the login page
   bool _validateLoginFields() {
     bool somethingWentWrong = false;
     if (userNameLoginController.text.isEmpty) {
@@ -219,6 +230,7 @@ abstract class _AuthenticationStore with Store {
     return somethingWentWrong;
   }
 
+  // Field validation function on the register page
   bool _validateRegisterFields() {
     bool somethingWentWrong = false;
     if (emailRegisterController.text.isEmpty) {

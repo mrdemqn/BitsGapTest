@@ -2,7 +2,6 @@ import 'package:bitsgap/presentation/stores/authentication_store/authentication_
 import 'package:bitsgap/presentation/widgets/animated_loader.dart';
 import 'package:bitsgap/presentation/widgets/authentication_buttons.dart';
 import 'package:bitsgap/presentation/widgets/regiter_page.dart';
-import 'package:bitsgap/utils/app_colors.dart';
 import 'package:bitsgap/utils/app_fonts.dart';
 import 'package:bitsgap/utils/clippers/wave_clipper.dart';
 import 'package:bitsgap/utils/const.dart';
@@ -13,6 +12,7 @@ import 'package:get_it/get_it.dart';
 
 import '../stores/theme_store/theme_store.dart';
 import '../widgets/login_page.dart';
+import '../widgets/success_notification.dart';
 
 class AuthenticationPage extends StatefulWidget {
   const AuthenticationPage({Key? key}) : super(key: key);
@@ -55,6 +55,13 @@ class _AuthenticationPageState extends State<AuthenticationPage> with TickerProv
         _animationController.stop();
       }
     });
+
+    _authStore.successNotifyStream.listen((_) {
+      _alignController.forward();
+      Future.delayed(const Duration(seconds: 3), () {
+        _alignController.reverse();
+      });
+    });
   }
 
   @override
@@ -75,6 +82,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> with TickerProv
               top: context.height * .064,
               left: context.width * .065,
             ),
+            /// Click on the logo to change the theme
             child: GestureDetector(
               behavior: HitTestBehavior.opaque,
               onTap: _themeStore.changeTheme,
@@ -111,12 +119,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> with TickerProv
                 authStore: _authStore,
               ),
               TextButton(
-                onPressed: () {
-                  _alignController.forward();
-                  Future.delayed(const Duration(seconds: 3), () {
-                    _alignController.reverse();
-                  });
-                },
+                onPressed: null,
                 child: Text(
                   'Forgot password?',
                   textAlign: TextAlign.center,
@@ -137,44 +140,9 @@ class _AuthenticationPageState extends State<AuthenticationPage> with TickerProv
               );
             },
           ),
-          AnimatedBuilder(
-              animation: _alignAnimation,
-              builder: (context, child) {
-                return Align(
-                  alignment: Alignment(0.0, _alignAnimation.value),
-                  child: Container(
-                    height: 60,
-                    width: 250,
-                    alignment: Alignment.center,
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 12,
-                      horizontal: 15,
-                    ),
-                    decoration: BoxDecoration(
-                      color: AppColors.success,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Row(
-                      children: const [
-                        Icon(
-                          Icons.check_circle_rounded,
-                          color: AppColors.white,
-                          size: 26,
-                        ),
-                        SizedBox(width: 15),
-                        Text(
-                          'Registration successful!',
-                          style: TextStyle(
-                            color: AppColors.white,
-                            fontSize: AppFonts.fontSizeS,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              }),
+          SuccessNotification(
+            animation: _alignAnimation,
+          ),
         ],
       ),
     );

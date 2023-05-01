@@ -62,6 +62,7 @@ class _MainPageState extends State<MainPage> with SingleTickerProviderStateMixin
               top: context.height * .064,
               left: context.width * .065,
             ),
+            /// Click on the logo to change the theme
             child: GestureDetector(
               behavior: HitTestBehavior.opaque,
               onTap: _themeStore.changeTheme,

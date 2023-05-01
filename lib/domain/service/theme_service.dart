@@ -5,7 +5,9 @@ abstract class ThemeService {
 
   ThemeData get darkTheme;
 
+  // Get currently installed theme
   ThemeData getTheme();
 
+  // Change currently installed theme
   Future<ThemeData> changeTheme();
 }
