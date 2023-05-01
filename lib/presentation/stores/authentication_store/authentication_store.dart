@@ -140,6 +140,7 @@ abstract class _AuthenticationStore with Store {
           password: passwordRegisterController.text,
         ),
       );
+      _successNotifyController.add(true);
       emailRegisterController.clear();
       userNameRegisterController.clear();
       passwordRegisterController.clear();

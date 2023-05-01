@@ -26,6 +26,7 @@ class AuthenticationServiceImpl extends AuthenticationService {
       final userModel = User.fromJson(userJson);
       if (userModel.password == password) {
         _user = userModel;
+        await _preferences.setString(Const.currentLoggedInUserKey, jsonEncode(userModel.toJson()));
         return true;
       } else {
         throw ArgumentError(Const.wrongPasswordMessage);
@@ -44,7 +45,20 @@ class AuthenticationServiceImpl extends AuthenticationService {
   }
 
   @override
+  User? getCurrentLoggedInUser() {
+    final userPrefs = _preferences.getString(Const.currentLoggedInUserKey);
+    if (userPrefs != null) {
+      final userJson = json.decode(userPrefs);
+      final userModel = User.fromJson(userJson);
+      _user = userModel;
+      return userModel;
+    }
+    return null;
+  }
+
+  @override
   Future<void> logOut() async {
     _user = null;
+    _preferences.remove(Const.currentLoggedInUserKey);
   }
 }

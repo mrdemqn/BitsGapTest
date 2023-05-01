@@ -1,7 +1,7 @@
 class Const {
   static const String themeKey = 'Theme';
 
-  static const String userLoginKey = 'UserLogin';
+  static const String currentLoggedInUserKey = 'CurrentUserLoggedIn';
 
   static const String wrongPasswordMessage = 'Wrong password';
   static const String userNotFoundMessage = 'User is not found';

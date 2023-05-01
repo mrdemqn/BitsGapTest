@@ -1,3 +1,4 @@
+import 'package:bitsgap/presentation/pages/authentication_page.dart';
 import 'package:bitsgap/presentation/widgets/animated_loader.dart';
 import 'package:bitsgap/utils/extensions/context_extension.dart';
 import 'package:flutter/material.dart';
@@ -75,7 +76,19 @@ class _MainPageState extends State<MainPage> with SingleTickerProviderStateMixin
           Center(
             child: TextButton(
               onPressed: () {
-                _mainPageStore.logOut().then((value) => Navigator.pop(context));
+                _mainPageStore.logOut().then((value) {
+                  if (Navigator.canPop(context)) {
+                    Navigator.pop(context);
+                  } else {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        fullscreenDialog: true,
+                        builder: (context) => const AuthenticationPage(),
+                      ),
+                    );
+                  }
+                });
               },
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(context.colorScheme.secondary),

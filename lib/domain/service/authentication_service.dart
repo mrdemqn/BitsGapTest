@@ -13,6 +13,9 @@ abstract class AuthenticationService {
   // User object required
   Future<void> register(User user);
 
+  // Get user which was log in
+  User? getCurrentLoggedInUser();
+
   // Logout function Removes the logged in user from memory when invoked
   Future<void> logOut();
 }
